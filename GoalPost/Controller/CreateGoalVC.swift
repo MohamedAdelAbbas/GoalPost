@@ -40,7 +40,7 @@ class CreateGoalVC: UIViewController {
     // MARK: Class Methods
     
     @IBAction func backBtnPressed(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
+       dismissDetail()
     }
     // MARK: Self Defined Methods
     

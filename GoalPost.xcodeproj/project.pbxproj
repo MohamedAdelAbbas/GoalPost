@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		764004F9247CBE11001E4F7E /* CreateGoalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764004F8247CBE10001E4F7E /* CreateGoalVC.swift */; };
+		764004FB247CC5FE001E4F7E /* UIViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764004FA247CC5FE001E4F7E /* UIViewControllerExt.swift */; };
 		7662DE16247C6C1400A5CC45 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7662DE15247C6C1400A5CC45 /* AppDelegate.swift */; };
 		7662DE18247C6C1400A5CC45 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7662DE17247C6C1400A5CC45 /* SceneDelegate.swift */; };
 		7662DE1D247C6C1400A5CC45 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7662DE1B247C6C1400A5CC45 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		764004F8247CBE10001E4F7E /* CreateGoalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGoalVC.swift; sourceTree = "<group>"; };
+		764004FA247CC5FE001E4F7E /* UIViewControllerExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExt.swift; sourceTree = "<group>"; };
 		7662DE12247C6C1400A5CC45 /* GoalPost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalPost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7662DE15247C6C1400A5CC45 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7662DE17247C6C1400A5CC45 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 		7662DE2F247C704500A5CC45 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				764004FA247CC5FE001E4F7E /* UIViewControllerExt.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			files = (
 				7662DE16247C6C1400A5CC45 /* AppDelegate.swift in Sources */,
 				7662DE20247C6C1400A5CC45 /* GoalPost.xcdatamodeld in Sources */,
+				764004FB247CC5FE001E4F7E /* UIViewControllerExt.swift in Sources */,
 				7662DE37247CA5D600A5CC45 /* GoalType.swift in Sources */,
 				7662DE18247C6C1400A5CC45 /* SceneDelegate.swift in Sources */,
 				764004F9247CBE11001E4F7E /* CreateGoalVC.swift in Sources */,
