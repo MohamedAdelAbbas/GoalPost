@@ -13,17 +13,21 @@ class GoalsVC: UIViewController {
     // MARK: Outlets
     
     @IBOutlet weak var tableview: UITableView!
-    
+        @IBOutlet weak var undoView: UIView!
     // MARK: Properties
     
      var goals: [Goal] = []
+    var lastRemovedGoalDesc: String?
+    var lastRemovedGoalType: String?
+    var lastRemovedGoalCompletionValue: Int32?
+    var lastRemovedGoalProgress: Int32?
     
     // MARK: View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableview.isHidden = false
-        
+        //tableview.isHidden = false
+        undoView.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,7 +35,10 @@ class GoalsVC: UIViewController {
            fetchCoreDataObjects()
            tableview.reloadData()
        }
-       
+       override var preferredStatusBarStyle: UIStatusBarStyle {
+           return .lightContent
+       }
+    
        func fetchCoreDataObjects() {
            self.fetch { (complete) in
                if complete {
@@ -48,9 +55,26 @@ class GoalsVC: UIViewController {
     @IBAction func addGoalBtnPressed(_ sender: UIButton) {
         guard let CreateGoalVC = storyboard?.instantiateViewController(identifier: "CreateGoalVC")else{return}
         presentDetail(CreateGoalVC)
+        undoView.isHidden = true
     }
     
-    
+    @IBAction func undoBtnPressed(_ sender: UIButton) {
+        let oldGoal = Goal(context: managedContext)
+               oldGoal.goalDescription = lastRemovedGoalDesc
+               oldGoal.goalType = lastRemovedGoalType
+               oldGoal.goalCompleationValue = lastRemovedGoalCompletionValue!
+               oldGoal.goalProgress = lastRemovedGoalProgress!
+               
+               do {
+                   try managedContext.save()
+                   undoView.isHidden = true
+                    fetchCoreDataObjects()
+                    tableview.reloadData()
+                   print("Successfully undo'd")
+               } catch {
+                   debugPrint("Could not undo \(error.localizedDescription)")
+               }
+    }
     
     // MARK: Fetech Data From Presitant Store Methods
     func setProgress(atIndexPath indexPath: IndexPath) {
@@ -72,11 +96,19 @@ class GoalsVC: UIViewController {
     }
     
     func removeGoal(atIndexPath indexPath: IndexPath) {
+        // Delete goal
+        let delGoal = goals[indexPath.row]
+        
+        lastRemovedGoalDesc = delGoal.goalDescription
+        lastRemovedGoalType = delGoal.goalType
+        lastRemovedGoalCompletionValue = delGoal.goalCompleationValue
+        lastRemovedGoalProgress = delGoal.goalProgress
         
         managedContext.delete(goals[indexPath.row])
         
         do {
             try managedContext.save()
+            undoView.isHidden = false
             print("Successfully removed goal!")
         } catch {
             debugPrint("Could not remove: \(error.localizedDescription)")
