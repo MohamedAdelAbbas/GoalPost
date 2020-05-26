@@ -18,7 +18,7 @@ class GoalsVC: UIViewController {
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tableview.isHidden = false
         
     }
     
@@ -34,16 +34,18 @@ class GoalsVC: UIViewController {
     
 }
 
-//extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
-//    // MARK: - Table view data source
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        <#code#>
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        <#code#>
-//    }
-//    
-//    // MARK: - Table view delegate
-//    
-//}
+extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
+    // MARK: - Table view data source
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        3
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCell") as? GoalCell else{return UITableViewCell()}
+        cell.configureCell(description: "Eat saled twice a week", type: .shortTerm, progressAmount: 2)
+        return cell
+    }
+    
+    // MARK: - Table view delegate
+    
+}
