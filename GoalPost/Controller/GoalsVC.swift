@@ -11,17 +11,39 @@ import CoreData
 class GoalsVC: UIViewController {
 
     // MARK: Outlets
+    
     @IBOutlet weak var tableview: UITableView!
     
     // MARK: Properties
     
+     var goals: [Goal] = []
+    
     // MARK: View Controller Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableview.isHidden = false
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(animated)
+           fetchCoreDataObjects()
+        tableview.reloadData()
+       }
+       
+       func fetchCoreDataObjects() {
+           self.fetch { (complete) in
+               if complete {
+                   if goals.count >= 1 {
+                       tableview.isHidden = false
+                   } else {
+                       tableview.isHidden = true
+                   }
+               }
+           }
+        tableview.reloadData()
+       }
     // MARK: Action
     
     @IBAction func addGoalBtnPressed(_ sender: UIButton) {
@@ -31,19 +53,63 @@ class GoalsVC: UIViewController {
     // MARK: Class Methods
     
     
-    // MARK: Self Defined Methods
+    // MARK: Fetech Data From Presitant Store Methods
+    func setProgress(atIndexPath indexPath: IndexPath) {
+        
+        let chosenGoal = goals[indexPath.row]
+        
+        if chosenGoal.goalProgress < chosenGoal.goalCompleationValue {
+            chosenGoal.goalProgress = chosenGoal.goalProgress + 1
+        } else {
+            return
+        }
+        
+        do {
+            try managedContext.save()
+            print("Successfully set progress!")
+        } catch {
+            debugPrint("Could not set progress: \(error.localizedDescription)")
+        }
+    }
+    
+    func removeGoal(atIndexPath indexPath: IndexPath) {
+        
+        managedContext.delete(goals[indexPath.row])
+        
+        do {
+            try managedContext.save()
+            print("Successfully removed goal!")
+        } catch {
+            debugPrint("Could not remove: \(error.localizedDescription)")
+        }
+    }
+    
+    func fetch(completion: (_ complete: Bool) -> ()) {
+       
+        let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
+        
+        do {
+            goals = try managedContext.fetch(fetchRequest)
+            print("Successfully fetched data.")
+            completion(true)
+        } catch {
+            debugPrint("Could not fetch: \(error.localizedDescription)")
+            completion(false)
+        }
+    }
     
 }
 
 extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     // MARK: - Table view data source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        return goals.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCell") as? GoalCell else{return UITableViewCell()}
-        cell.configureCell(description: "Eat saled twice a week", type: .shortTerm, progressAmount: 2)
+        let goal = goals[indexPath.row]
+        cell.configureCell(goal: goal)
         return cell
     }
     
