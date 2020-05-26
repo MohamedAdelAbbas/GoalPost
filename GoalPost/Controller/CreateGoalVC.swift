@@ -15,9 +15,13 @@ class CreateGoalVC: UIViewController, UITextViewDelegate {
     @IBOutlet weak var shortTermBtn: UIButton!
     @IBOutlet weak var longTermBtn: UIButton!
     @IBOutlet weak var nextBtn: UIButton!
+    
     // MARK: Properties
+    
     var goalType: GoalType = .shortTerm
+    
     // MARK: View Controller Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         nextBtn.bindToKeyboard()
@@ -25,6 +29,7 @@ class CreateGoalVC: UIViewController, UITextViewDelegate {
         longTermBtn.setDeselectedColor()
         goalTextView.delegate = self
     }
+    
     // MARK: Action
     
     @IBAction func shortTermPressed(_ sender: UIButton) {

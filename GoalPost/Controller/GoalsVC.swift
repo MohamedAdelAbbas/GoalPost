@@ -29,7 +29,7 @@ class GoalsVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
            fetchCoreDataObjects()
-        tableview.reloadData()
+           tableview.reloadData()
        }
        
        func fetchCoreDataObjects() {
@@ -42,7 +42,6 @@ class GoalsVC: UIViewController {
                    }
                }
            }
-        tableview.reloadData()
        }
     // MARK: Action
     
@@ -50,7 +49,7 @@ class GoalsVC: UIViewController {
         guard let CreateGoalVC = storyboard?.instantiateViewController(identifier: "CreateGoalVC")else{return}
         presentDetail(CreateGoalVC)
     }
-    // MARK: Class Methods
+    
     
     
     // MARK: Fetech Data From Presitant Store Methods
@@ -102,6 +101,11 @@ class GoalsVC: UIViewController {
 
 extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     // MARK: - Table view data source
+     func numberOfSections(in tableView: UITableView) -> Int {
+           // #warning Incomplete implementation, return the number of sections
+           return 1
+       }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return goals.count
     }
@@ -114,5 +118,38 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     // MARK: - Table view delegate
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
+             self.removeGoal(atIndexPath: indexPath)
+            self.fetchCoreDataObjects()
+            tableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .fade)
+            completionHandler(true)
+            }
+
+        let addAction = UIContextualAction(style: .destructive, title: "Add 1") { (action, sourceView, completionHandler) in
+            self.setProgress(atIndexPath: indexPath)
+            tableView.reloadRows(at: [indexPath], with: .fade)
+            completionHandler(true)
+        }
+        deleteAction.image = UIImage(named: "delete")
+        deleteAction.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+        
+        addAction.backgroundColor = #colorLiteral(red: 0.961445272, green: 0.650790751, blue: 0.1328578591, alpha: 1)
+
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, addAction])
+        return swipeConfiguration
+    }
+
+//    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let checkInAction = UIContextualAction(style: .normal, title: "Check-in") { (action, sourceView, completionHandler) in
+//            
+//            completionHandler(true)
+//        }
+//        let checkInIcon = restaurants[indexPath.row].isVisited ? "undo" : "tick"
+//        checkInAction.backgroundColor = UIColor(red: 38.0/255.0, green: 162.0/255.0, blue: 78.0/255.0, alpha: 1.0)
+//        checkInAction.image = UIImage(named: checkInIcon)
+//        let swipeConfiguration = UISwipeActionsConfiguration(actions: [checkInAction])
+//        return swipeConfiguration
+//    }
     
 }
