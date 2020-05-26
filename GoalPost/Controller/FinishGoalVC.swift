@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class FinishGoalVC: UIViewController, UITextFieldDelegate {
     // MARK: Outlets
@@ -34,16 +35,37 @@ class FinishGoalVC: UIViewController, UITextFieldDelegate {
     // MARK: Action
     @IBAction func createGoalBtnPressed(_ sender: UIButton) {
         // Pass data into Core Data Goal Model
-        
+        self.save{ (complete) in
+            if complete{
+                dismiss(animated: true, completion: nil)
+            }
+        }
     }
     @IBAction func backBtnPressed(_ sender: UIButton) {
         dismissDetail()
     }
     
-    
     // MARK: Self Defined Methods
-    // MARK: - Table view data source
-    // MARK: - Table view delegate
+    
+    func save(compleation: (_ finished: Bool) -> ()){
+        let goal = Goal(context: managedContext)
+        
+        goal.goalDescription = goalDescription
+        goal.goalType = goalTypt.rawValue
+        goal.goalCompleationValue = Int32(pointsTextField.text!)!
+        goal.goalProgress = Int32(0)
+        
+        do{
+            try managedContext.save()
+            print("Successfully saved data.")
+            compleation(true)
+        }catch{
+            debugPrint("Could not save: \(error.localizedDescription)")
+            compleation(false)
+        }
+        
+        
+    }
     
     
     
