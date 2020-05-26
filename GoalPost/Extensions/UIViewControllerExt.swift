@@ -15,7 +15,7 @@ extension UIViewController {
         transition.type = CATransitionType.push
         transition.subtype = CATransitionSubtype.fromRight
         self.view.window?.layer.add(transition, forKey: kCATransition)
-        
+    
         present(viewControllerToPresent, animated: false, completion: nil)
     }
     
